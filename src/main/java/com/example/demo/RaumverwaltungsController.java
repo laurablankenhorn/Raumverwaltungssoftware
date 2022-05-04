@@ -1,3 +1,4 @@
+
 package com.example.demo;
 
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -20,7 +21,6 @@ public class RaumverwaltungsController {
     }
 
 
-
     @RequestMapping(path = "/ChangeBelegung")
     String changeBelegung(@RequestParam("Raumnummer") String raumnummer) { //input variable
         SqlParameterSource namedParameters = new MapSqlParameterSource().addValue("Raumnummer", raumnummer); // wie heißt Parameter?
@@ -28,16 +28,36 @@ public class RaumverwaltungsController {
         System.out.println(belegung); // :raumnummer wichtig! .. für mehrere Parameter ->.addvalue
         if (belegung.equals("t")) {
             jdbcTemplate.execute("UPDATE Belegung set Zustand = FALSE where Raumnummer = '" + raumnummer + "'");
-            return "Zustand wurde von Raum " + raumnummer + " auf belegt geaendert.";
+            return "Zustand von Raum " + raumnummer + " wurde auf belegt geaendert.";
 
         } else if (belegung.equals("f")) {
             jdbcTemplate.execute("UPDATE Belegung set Zustand = TRUE where Raumnummer = '" + raumnummer + "'");
-            return "Zustand wurde von Raum " + raumnummer + " auf frei geaendert.";
+            return "Zustand von Raum " + raumnummer + " wurde auf frei geaendert.";
         } else {
             return "Hier ist etwas schief gelaufen";
         }
 
-
     }
 
+    @RequestMapping(path = "/ShowKapazitaet")
+    String showKapazitaet(@RequestParam("Raumnummer") String raumnummer) {
+        SqlParameterSource namedParameters = new MapSqlParameterSource().addValue("Raumnummer", raumnummer);
+        String kapazitaet = jdbcTemplateNamed.queryForObject("SELECT Sitzplaetze FROM kapazitaet WHERE Raumnummer = :Raumnummer", namedParameters, String.class);
+        System.out.println(kapazitaet);
+
+        return "Die Sitzplatzanzahl in Raum " + raumnummer + " betraegt " + kapazitaet;
+    }
+
+    @RequestMapping(path = "/ShowInventar")
+    String showInventar(@RequestParam("Raumnummer") String raumnummer) {
+        SqlParameterSource namedParameters = new MapSqlParameterSource().addValue("Raumnummer", raumnummer);
+        String inventar = jdbcTemplateNamed.queryForObject("SELECT Inhalt FROM inventar WHERE Raumnummer = :Raumnummer", namedParameters, String.class);
+        System.out.println(inventar);
+
+        return "Folgendes Inventar ist in Raum " + raumnummer + " vorhanden: " + inventar;
+
+    }
 }
+
+
+
