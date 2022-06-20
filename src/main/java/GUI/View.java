@@ -93,7 +93,7 @@ public class View extends JFrame {
 
 		panelControl2 = new JPanel();
 		contentPane.add(panelControl2, BorderLayout.EAST);
-		JButton btnback = new JButton("zur�ck");
+		JButton btnback = new JButton("zur\u00FCck");
 		panelControl2.add(btnback);
 		
 
@@ -278,6 +278,19 @@ public class View extends JFrame {
 		// Raum-Buttons f�r 1.OG
 
 		JButton btnM102 = new JButton("M102");
+		
+		/*
+		if (raumverwaltungsController.showBelegung("M102").equals("t")) {
+			btnM102.setBackground(Color.GREEN);
+			repaint();
+		}
+		else {
+			btnM102.setBackground(Color.RED);
+		}
+		*/
+		
+		
+		
 		og1.add(btnM102);
 		
 		
@@ -310,7 +323,17 @@ public class View extends JFrame {
 
 				contentPane.add(obergeschoss1);
 				obergeschoss1.setLayout(null);
-
+				
+//---------------------------------------------------------------------------------------------------	jedes mal wenn man Geschoss button drückt wird geprüft welcher Belegungszustand aktuell ist.		
+				if (raumverwaltungsController.showBelegung("M102").equals("t")) {      				 // je nach dewm wird Buttonfarbe angepasst
+					btnM102.setBackground(Color.GREEN);
+					repaint();
+				}
+				else if (raumverwaltungsController.showBelegung("M102").equals("f")) {
+						btnM102.setBackground(Color.RED);
+						repaint();
+				}
+//--------------------------------------------------------------------------------------
 				/*
 				 * panelControl = new JPanel(); contentPane.add(panelControl,
 				 * BorderLayout.SOUTH);
@@ -332,13 +355,24 @@ public class View extends JFrame {
 						JOptionPane.QUESTION_MESSAGE, null, optionsToChoose, optionsToChoose[3]);
 				
 				if(Dropdown.equals("Raum belegen")) {
-					raumverwaltungsController.changeBelegung("M102");
+					raumverwaltungsController.changeBelegung("M102");                     // Belegungszustand wird geändert geprüft und neu geladen 
+					if (raumverwaltungsController.showBelegung("M102").equals("t")) {
+						btnM102.setBackground(Color.GREEN);
+						repaint();
+					}
+					else if (raumverwaltungsController.showBelegung("M102").equals("f")) {
+							btnM102.setBackground(Color.RED);
+							repaint();
+					}
+					
 					
 				}
 				if(Dropdown.equals("Kapazitaet")) {
 					raumverwaltungsController.showKapazitaet("M102");
 					
 				}
+				
+				
 				
 				
 			}

@@ -106,6 +106,19 @@ public class RaumverwaltungsController extends JFrame {
 
 	}
 	
+	@RequestMapping(path = "/showBelegung")
+	public
+	String showBelegung(@RequestParam("Raumnummer") String raumnummer) { // input variable
+		SqlParameterSource namedParameters = new MapSqlParameterSource().addValue("Raumnummer", raumnummer); 
+																											
+																												
+		String belegung = jdbcTemplateNamed.queryForObject(
+				"SELECT Zustand FROM Belegung WHERE Raumnummer = :Raumnummer", namedParameters, String.class);
+		System.out.println(belegung);
+		return belegung;
+		
+	
 	
 
+}
 }
